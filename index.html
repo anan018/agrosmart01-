@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgroSmart | L'agriculture intelligente, simple et accessible</title>
+<meta name="description" content="AgroSmart développe des outils simples pour aider les agriculteurs et éleveurs à comprendre les besoins de leurs plantes et de leurs animaux.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Mise en page : en-tête clair, héro vert pâle avec rangée d'arbres, sections alternées, pied de page vert doux avec silhouette d'arbres. */
+:root{
+  --ink:#17301f; --muted:#51675a; --forest:#1f5f43; --green:#2e8b57; --leaf:#5cb882;
+  --pale:#e7f3e1; --mint:#dcefd4; --cream:#f7faf4; --white:#ffffff; --line:#d3e3cb; --sun:#f0b429;
+  --footer:#2b6a4b;
+  --display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
+  --body:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;font-family:var(--body);font-size:16px;line-height:1.6;color:var(--ink);background:var(--cream)}
+img,svg{max-width:100%}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:max(20px,env(safe-area-inset-left,0px)) max(20px,env(safe-area-inset-right,0px));position:relative}
+h1,h2,h3{font-family:var(--display);line-height:1.12;letter-spacing:-.02em;margin:0;text-wrap:balance;color:var(--forest)}
+h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800}
+h3{font-size:1.2rem;font-weight:700}
+p{margin:0}
+.kicker{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:10px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 22px;border-radius:8px;
+  font:inherit;font-weight:700;text-decoration:none;border:2px solid var(--green);background:var(--green);color:#fff;cursor:pointer;
+}
+.btn:hover{background:var(--forest);border-color:var(--forest)}
+.btn.line{background:transparent;color:var(--forest);border-color:var(--forest)}
+.btn.line:hover{background:var(--forest);color:#fff}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+
+header{position:sticky;top:0;z-index:50;background:rgba(247,250,244,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:62px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:1.3rem;text-decoration:none;color:var(--forest)}
+.logo svg{width:30px;height:30px}
+.logo span em{font-style:normal;color:var(--green)}
+.links{display:flex;gap:4px 18px;flex-wrap:wrap;font-size:.95rem}
+.links a{text-decoration:none;color:var(--ink);padding:6px 2px}
+.links a:hover{color:var(--green)}
+
+/* Héro */
+.hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#e3f2dc 0%,#f1f8ec 100%);padding-block:60px 150px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;position:relative;z-index:2}
+.hero h1{font-size:clamp(2.2rem,6vw,3.5rem);font-weight:800}
+.hero h1 em{font-style:normal;color:var(--green)}
+.hero p.lead{margin-top:18px;font-size:1.1rem;max-width:34em;color:var(--muted)}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.demo{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 10px 30px rgba(31,95,67,.10)}
+.demo small{display:block;color:var(--muted);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.gauge{margin-bottom:14px}
+.gauge .lab{display:flex;justify-content:space-between;font-size:.92rem;margin-bottom:6px}
+.bar{height:10px;background:var(--mint);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--leaf)}
+.advice{margin-top:6px;padding:12px 14px;background:var(--pale);border-left:4px solid var(--green);border-radius:6px;font-size:.95rem}
+.trees{position:absolute;left:0;right:0;bottom:0;width:100%;height:130px;display:block;z-index:1}
+.trees-footer{display:block;width:100%;height:80px;margin-bottom:-1px}
+[hidden]{display:none!important}
+.hero-sky{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.about-art{width:100%;height:auto;display:block;border-radius:12px;border:1px solid var(--line);background:#eaf5e4}
+
+section{padding-block:72px}
+.head{max-width:44em;margin-bottom:36px}
+.head p{margin-top:12px;color:var(--muted);font-size:1.05rem}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.about p+p{margin-top:14px}
+.about p{color:var(--muted)}
+.values{display:grid;gap:12px}
+.value{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.value b{display:block;font-family:var(--display);font-size:1.05rem;margin-bottom:2px;color:var(--forest)}
+.value span{color:var(--muted);font-size:.95rem}
+
+.alt{background:var(--white);border-block:1px solid var(--line)}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.card{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.card .ico{width:44px;height:44px;border-radius:10px;background:var(--mint);display:grid;place-items:center}
+.card .ico svg{width:24px;height:24px}
+.card p{color:var(--muted);font-size:.97rem}
+.tag{align-self:flex-start;font-size:.75rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--mint);color:var(--forest)}
+
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s}
+.step{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:22px}
+.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;font-family:var(--display);font-weight:800;margin-bottom:12px}
+.step p{color:var(--muted);font-size:.97rem;margin-top:6px}
+
+.why{background:var(--mint);position:relative;overflow:hidden}
+.why-deco{position:absolute;right:-10px;bottom:0;width:260px;height:260px;opacity:.55;pointer-events:none}
+.why .head,.why-grid{position:relative;z-index:2}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.why-item{border:1px solid var(--line);border-radius:12px;padding:20px;background:rgba(255,255,255,.85)}
+.why-item p{margin-top:6px;color:var(--muted);font-size:.97rem}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.infos{display:grid;gap:12px}
+.info{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.info small{display:block;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;color:var(--muted);font-weight:700;margin-bottom:2px}
+.info a{font-weight:700;color:var(--green);overflow-wrap:anywhere}
+form{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:22px;display:grid;gap:14px}
+label{display:grid;gap:5px;font-weight:700;font-size:.92rem}
+input,textarea{font:inherit;font-weight:400;padding:11px 12px;border:1px solid #b9cfae;border-radius:8px;background:var(--cream);color:var(--ink);width:100%;min-width:0}
+textarea{min-height:120px;resize:vertical}
+.note{font-size:.85rem;color:var(--muted)}
+
+footer{background:var(--footer);color:#d3e8da;padding-block:26px calc(26px + env(safe-area-inset-bottom,0px));font-size:.92rem}
+.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (max-width:860px){
+  .hero-grid,.about,.contact-grid{grid-template-columns:1fr}
+  .cards,.steps,.why-grid{grid-template-columns:1fr}
+  section{padding-block:52px}
+  .hero{padding-block:44px 120px}
+  .trees{height:100px}
+  .why-deco{display:none}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- Dessins d'arbres réutilisés dans toute la page -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="tround" viewBox="0 0 60 100">
+      <rect x="27" y="56" width="6" height="44" rx="2" fill="#8a6b4a"/>
+      <circle cx="30" cy="34" r="25" fill="currentColor"/>
+      <circle cx="17" cy="48" r="15" fill="currentColor"/>
+      <circle cx="43" cy="48" r="15" fill="currentColor"/>
+    </symbol>
+    <symbol id="tpine" viewBox="0 0 50 100">
+      <rect x="22" y="70" width="6" height="30" rx="2" fill="#8a6b4a"/>
+      <path d="M25 2 L38 28 H31 L42 50 H34 L47 76 H3 L16 50 H8 L19 28 H12 Z" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#accueil" aria-label="AgroSmart, accueil">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 29V15" stroke="#2e8b57" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M16 17C16 10 11 6 4 6c0 7 4 11 12 11Z" fill="#2e8b57"/><path d="M16 14c0-6 4-10 12-10 0 7-4 10-12 10Z" fill="#7fd29b"/></svg>
+      <span>Agro<em>Smart</em></span>
+    </a>
+    <nav class="links" aria-label="Navigation principale">
+      <a href="#apropos">À propos</a>
+      <a href="#solutions">Solutions</a>
+      <a href="#methode">Méthode</a>
+      <a href="#pourquoi">Pourquoi nous</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="hero" id="accueil">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="kicker">Agriculture intelligente</span>
+      <h1>Comprendre ses plantes et ses animaux, <em>simplement</em>.</h1>
+      <p class="lead">AgroSmart conçoit des outils accessibles qui aident agriculteurs, éleveurs et étudiants à savoir ce dont leurs cultures et leur bétail ont besoin, au bon moment.</p>
+      <div class="cta">
+        <a class="btn" href="#solutions">Découvrir nos solutions</a>
+        <a class="btn line" href="#contact">Nous contacter</a>
+      </div>
+    </div>
+    <div class="demo" aria-label="Exemple d'affichage d'un outil AgroSmart">
+      <small>Exemple d'affichage</small>
+      <div class="gauge"><div class="lab"><span>Humidité du sol</span><b>32 %</b></div><div class="bar"><i style="width:32%"></i></div></div>
+      <div class="gauge"><div class="lab"><span>Température</span><b>29 °C</b></div><div class="bar"><i style="width:58%"></i></div></div>
+      <div class="advice"><b>Conseil :</b> le sol est sec. Arrosez ce soir, à la fraîcheur, pour limiter l'évaporation.</div>
+    </div>
+  </div>
+
+  <!-- Soleil et nuages -->
+  <svg class="hero-sky" viewBox="0 0 1200 400" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
+    <circle cx="1040" cy="90" r="70" fill="#fff3c4" opacity=".55"/>
+    <circle cx="1040" cy="90" r="42" fill="#ffe08a"/>
+    <g fill="#ffffff" opacity=".9">
+      <ellipse cx="200" cy="80" rx="60" ry="20"/><ellipse cx="240" cy="68" rx="40" ry="18"/><ellipse cx="165" cy="72" rx="34" ry="14"/>
+      <ellipse cx="640" cy="52" rx="52" ry="17"/><ellipse cx="676" cy="42" rx="34" ry="15"/>
+      <ellipse cx="860" cy="170" rx="46" ry="15"/><ellipse cx="890" cy="160" rx="30" ry="13"/>
+    </g>
+  </svg>
+
+  <!-- Rangée d'arbres en bas du héro -->
+  <svg class="trees" viewBox="0 0 1200 130" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <rect x="0" y="116" width="1200" height="14" fill="#b7dcae"/>
+    <g fill="#9ccf90">
+      <ellipse cx="60" cy="118" rx="26" ry="12"/><ellipse cx="205" cy="119" rx="22" ry="10"/><ellipse cx="335" cy="118" rx="28" ry="12"/>
+      <ellipse cx="500" cy="119" rx="24" ry="11"/><ellipse cx="640" cy="118" rx="28" ry="12"/><ellipse cx="800" cy="119" rx="22" ry="10"/>
+      <ellipse cx="955" cy="118" rx="28" ry="12"/><ellipse cx="1120" cy="119" rx="24" ry="11"/>
+    </g>
+    <g style="color:#cfe8c6">
+      <use href="#tpine" x="20"  y="30" width="46" height="92"/>
+      <use href="#tround" x="150" y="38" width="56" height="84"/>
+      <use href="#tpine" x="300" y="22" width="50" height="100"/>
+      <use href="#tround" x="450" y="34" width="60" height="88"/>
+      <use href="#tpine" x="610" y="26" width="48" height="96"/>
+      <use href="#tround" x="760" y="36" width="58" height="86"/>
+      <use href="#tpine" x="900" y="24" width="50" height="98"/>
+      <use href="#tround" x="1040" y="32" width="60" height="90"/>
+      <use href="#tpine" x="1140" y="30" width="46" height="92"/>
+    </g>
+    <g style="color:#a8d59d">
+      <use href="#tround" x="80"  y="60" width="50" height="64"/>
+      <use href="#tpine" x="230" y="52" width="40" height="72"/>
+      <use href="#tround" x="370" y="62" width="48" height="62"/>
+      <use href="#tpine" x="530" y="50" width="42" height="74"/>
+      <use href="#tround" x="680" y="60" width="50" height="64"/>
+      <use href="#tpine" x="840" y="52" width="40" height="72"/>
+      <use href="#tround" x="980" y="62" width="48" height="62"/>
+      <use href="#tpine" x="1100" y="54" width="40" height="70"/>
+    </g>
+  </svg>
+</div>
+
+<section id="apropos">
+  <div class="wrap about">
+    <div>
+      <span class="kicker">À propos</span>
+      <h2>Une idée née au Bénin, pensée pour l'Afrique</h2>
+      <p style="margin-top:16px">AgroSmart est un projet d'agronomie lancé par un jeune agronome béninois passionné de sciences et de technologie. Son but : mettre la technologie et l'intelligence artificielle au service de l'agriculture locale.</p>
+      <p>Trop d'outils agricoles sont chers ou compliqués. Nous partons du terrain : du matériel simple, facile à trouver, et des explications claires que chacun comprend.</p>
+    </div>
+    <div class="values">
+      <svg class="about-art" viewBox="0 0 480 300" role="img" aria-label="Illustration d'un champ cultivé avec des arbres et une vache">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9efff"/><stop offset="1" stop-color="#f2f9ea"/></linearGradient>
+        </defs>
+        <rect width="480" height="300" fill="url(#sky)"/>
+        <circle cx="388" cy="64" r="48" fill="#fff3c4" opacity=".6"/>
+        <circle cx="388" cy="64" r="30" fill="#ffd96b"/>
+        <g fill="#fff" opacity=".95">
+          <ellipse cx="90" cy="60" rx="46" ry="15"/><ellipse cx="122" cy="50" rx="30" ry="13"/>
+          <ellipse cx="250" cy="38" rx="38" ry="12"/><ellipse cx="274" cy="30" rx="24" ry="10"/>
+        </g>
+        <path d="M0 170 Q70 120 150 160 T300 150 T480 160 V300 H0Z" fill="#cfe8c6"/>
+        <path d="M0 190 Q90 150 190 182 T380 176 T480 186 V300 H0Z" fill="#b4dba8"/>
+        <g style="color:#8fc783">
+          <use href="#tround" x="40" y="118" width="44" height="66"/>
+          <use href="#tpine" x="100" y="124" width="34" height="62"/>
+          <use href="#tround" x="400" y="124" width="46" height="66"/>
+          <use href="#tpine" x="352" y="130" width="32" height="58"/>
+        </g>
+        <path d="M0 205 H480 V300 H0Z" fill="#9fd194"/>
+        <g stroke="#5fa75c" stroke-width="5" stroke-linecap="round" fill="none">
+          <path d="M-40 300 L228 205"/><path d="M40 300 L236 205"/><path d="M130 300 L244 205"/>
+          <path d="M240 300 L250 205"/><path d="M350 300 L258 205"/><path d="M440 300 L266 205"/><path d="M520 300 L274 205"/>
+        </g>
+        <g fill="#3f9a55">
+          <path d="M112 262c0-9-6-14-14-14 0 8 5 14 14 14Z"/><path d="M112 262c0-8 5-12 12-12 0 7-4 12-12 12Z"/>
+          <path d="M214 244c0-7-5-11-11-11 0 6 4 11 11 11Z"/><path d="M214 244c0-6 4-10 10-10 0 6-4 10-10 10Z"/>
+          <path d="M398 266c0-9-6-14-14-14 0 8 5 14 14 14Z"/><path d="M398 266c0-8 5-12 12-12 0 7-4 12-12 12Z"/>
+        </g>
+        <g transform="translate(300 232) scale(.9)">
+          <rect x="10" y="26" width="4" height="14" fill="#6b5a4a"/><rect x="20" y="26" width="4" height="14" fill="#6b5a4a"/>
+          <rect x="38" y="26" width="4" height="14" fill="#6b5a4a"/><rect x="48" y="26" width="4" height="14" fill="#6b5a4a"/>
+          <ellipse cx="30" cy="20" rx="26" ry="13" fill="#ffffff" stroke="#8a9a8a" stroke-width="1.5"/>
+          <ellipse cx="22" cy="17" rx="7" ry="5" fill="#4a4a4a"/><ellipse cx="40" cy="23" rx="6" ry="4" fill="#4a4a4a"/>
+          <ellipse cx="62" cy="14" rx="9" ry="8" fill="#ffffff" stroke="#8a9a8a" stroke-width="1.5"/>
+          <ellipse cx="68" cy="17" rx="4" ry="3" fill="#f0b9b0"/><circle cx="62" cy="11" r="1.4" fill="#222"/>
+          <path d="M58 7 l-3 -5 M66 7 l3 -5" stroke="#8a7a60" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <div class="value"><b>Notre mission</b><span>Aider chaque producteur à décider avec des données plutôt qu'au hasard.</span></div>
+      <div class="value"><b>Notre approche</b><span>Observer, mesurer, expliquer, puis recommander une action concrète.</span></div>
+      <div class="value"><b>Notre ambition</b><span>Contribuer au développement de l'agriculture béninoise et africaine.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="solutions" class="alt">
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker">Nos solutions</span>
+      <h2>Quatre projets pour l'agriculture de demain</h2>
+      <p>Chaque solution part d'un besoin réel du terrain. Plusieurs sont encore en développement : nous le disons clairement.</p>
+    </div>
+    <div class="cards">
+      <article class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#2e8b57" stroke-width="2" stroke-linecap="round"><path d="M12 22V11"/><path d="M12 13C12 8 9 5 4 5c0 5 3 8 8 8Z"/><path d="M12 11c0-4 3-7 8-7 0 5-3 7-8 7Z"/></svg></div>
+        <span class="tag">Prototype en cours</span>
+        <h3>Phytolink</h3>
+        <p>Un capteur d'humidité du sol relié à une carte électronique et à des voyants lumineux pour indiquer ce dont une plante a besoin. À terme, l'intelligence artificielle interprète les mesures et propose des conseils.</p>
+      </article>
+      <article class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#2e8b57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9c0-2 1-3 3-3h8c3 0 5 2 5 5v3H8c-2 0-4-1-4-3Z"/><path d="M8 14v5M17 14v5"/><path d="M4 9H2M20 8l2-2"/></svg></div>
+        <span class="tag">Conception</span>
+        <h3>Smart Capteur d'élevage</h3>
+        <p>Un outil pour déterminer la ration d'un bovin (fourrage, concentré ou mélange) selon son âge, son poids, sa taille et sa température. Pensé avec du matériel rural, simple et facile à trouver en Afrique.</p>
+      </article>
+      <article class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#2e8b57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4Z"/><path d="M8 9h8M8 12h5"/></svg></div>
+        <span class="tag">Idée</span>
+        <h3>Assistant agronome IA</h3>
+        <p>Un assistant qui répond naturellement aux questions agricoles : maladies, arrosage, sol, élevage. Disponible sur téléphone, avec des réponses simples, étape par étape.</p>
+      </article>
+      <article class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#2e8b57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3Z"/></svg></div>
+        <span class="tag">En ligne</span>
+        <h3>AgroLabel, le savoir en vidéo</h3>
+        <p>Des vidéos courtes et éducatives qui expliquent l'agronomie simplement : photosynthèse, sol, pisciculture, élevage. Pour apprendre en quelques minutes.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="methode">
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker">Notre méthode</span>
+      <h2>De la mesure au conseil en trois étapes</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><h3>Mesurer</h3><p>Des capteurs simples relèvent l'humidité du sol, la température ou le poids pour connaître l'état réel de la culture ou de l'animal.</p></div>
+      <div class="step"><h3>Analyser</h3><p>Les mesures sont comparées aux besoins connus de la plante ou de la race. L'intelligence artificielle aide à repérer ce qui sort de la normale.</p></div>
+      <div class="step"><h3>Recommander</h3><p>Le résultat est un conseil clair : arroser, nourrir, surveiller. Pas de jargon, une action simple à faire.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pourquoi" class="why">
+  <svg class="why-deco" viewBox="0 0 260 260" aria-hidden="true">
+    <g style="color:#b9dcae">
+      <use href="#tround" x="20" y="40" width="130" height="217"/>
+      <use href="#tpine" x="150" y="90" width="90" height="167"/>
+    </g>
+  </svg>
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker">Pourquoi AgroSmart</span>
+      <h2>Utile, abordable, compréhensible</h2>
+      <p>Trois principes guident chacun de nos projets.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-item"><h3>Matériel accessible</h3><p>Des composants peu coûteux et faciles à trouver localement, pour que la technologie ne reste pas réservée aux grandes exploitations.</p></div>
+      <div class="why-item"><h3>Explications simples</h3><p>Chaque résultat est expliqué en mots simples, étape par étape, pour que le producteur comprenne et décide lui-même.</p></div>
+      <div class="why-item"><h3>Fondé sur la science</h3><p>Nos solutions s'appuient sur l'agronomie : pédologie, nutrition des plantes, alimentation animale et statistiques.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="head">
+      <span class="kicker">Contact</span>
+      <h2>Parlons de votre projet agricole</h2>
+      <p>Une question, une idée, un partenariat ? Écrivez-nous, nous répondons rapidement.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="infos">
+        <div class="info"><small>WhatsApp</small><a id="waLink" href="#">Écrire sur WhatsApp</a></div>
+        <div class="info"><small>Facebook</small><a id="fbLink" href="#">Page AgroSmart sur Facebook</a></div>
+        <div class="info"><small>E-mail</small><a id="mailLink" href="#">contact@exemple.com</a></div>
+        <div class="info"><small>Localisation</small><span id="place">Bénin</span></div>
+      </div>
+      <form id="form" autocomplete="on">
+        <label for="f-name">Votre nom<input id="f-name" name="name" type="text" required></label>
+        <label for="f-msg">Votre message<textarea id="f-msg" name="msg" required></textarea></label>
+        <button class="btn" type="submit">Envoyer sur WhatsApp</button>
+        <a id="waFallback" class="btn line" href="#" hidden>Si WhatsApp ne s'ouvre pas, touche ici</a>
+        <p class="note">Le bouton ouvre l'application WhatsApp avec votre nom et votre message déjà écrits. Il ne reste qu'à appuyer sur envoyer.</p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- Silhouette d'arbres au-dessus du pied de page -->
+<svg class="trees-footer" viewBox="0 0 1200 80" preserveAspectRatio="xMidYMax slice" aria-hidden="true" style="color:#2b6a4b">
+  <rect x="0" y="66" width="1200" height="14" fill="#2b6a4b"/>
+  <use href="#tpine" x="30"  y="8" width="34" height="70"/>
+  <use href="#tround" x="140" y="16" width="42" height="62"/>
+  <use href="#tpine" x="270" y="2" width="36" height="76"/>
+  <use href="#tround" x="400" y="14" width="44" height="64"/>
+  <use href="#tpine" x="540" y="10" width="34" height="68"/>
+  <use href="#tround" x="670" y="18" width="42" height="60"/>
+  <use href="#tpine" x="800" y="4" width="36" height="74"/>
+  <use href="#tround" x="930" y="14" width="44" height="64"/>
+  <use href="#tpine" x="1060" y="10" width="34" height="68"/>
+  <use href="#tround" x="1140" y="20" width="40" height="58"/>
+</svg>
+<footer>
+  <div class="wrap foot">
+    <span>© <span id="year">2026</span> AgroSmart. Tous droits réservés.</span>
+    <span>Agronomie, technologie et intelligence artificielle.</span>
+  </div>
+</footer>
+
+<script>
+/* Informations de contact d'AgroSmart (à modifier ici si elles changent). */
+var CONFIG = {
+  whatsapp: "2290192393770",
+  email: "orounamanan@gmail.com",
+  facebook: "https://www.facebook.com/Agrosmart01",
+  place: "Parakou, Bénin"
+};
+(function(){
+  var wa="https://api.whatsapp.com/send?phone="+CONFIG.whatsapp;
+  var w=document.getElementById('waLink');
+  w.href=wa+"&text="+encodeURIComponent("Bonjour AgroSmart, ");
+  w.target="_blank"; w.rel="noopener";
+  var m=document.getElementById('mailLink'); m.href="mailto:"+CONFIG.email; m.textContent=CONFIG.email;
+  var fb=document.getElementById('fbLink'); fb.href=CONFIG.facebook; fb.target="_blank"; fb.rel="noopener";
+  document.getElementById('place').textContent=CONFIG.place;
+  document.getElementById('year').textContent=new Date().getFullYear();
+
+  /* Envoi : quitte la page et ouvre WhatsApp avec le nom et le message déjà écrits. */
+  document.getElementById('form').addEventListener('submit',function(e){
+    e.preventDefault();
+    var name=document.getElementById('f-name').value.trim();
+    var msg=document.getElementById('f-msg').value.trim();
+    var text="Bonjour AgroSmart, je m'appelle "+name+".\n\n"+msg;
+    var url=wa+"&text="+encodeURIComponent(text);
+    var fb2=document.getElementById('waFallback'); fb2.href=url; fb2.hidden=false;
+    window.location.href=url;
+  });
+})();
+</script>
+</body>
+</html>
